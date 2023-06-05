@@ -1,0 +1,1 @@
+export type CountryCode = "CO" | "SG" | "DE" | "US";
