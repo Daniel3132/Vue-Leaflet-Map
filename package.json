@@ -44,11 +44,6 @@
     "vitepress": "^0.6.0",
     "vue-tsc": "^1.0.24"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.js": [
       "eslint"

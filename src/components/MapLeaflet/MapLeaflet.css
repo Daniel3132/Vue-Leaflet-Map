@@ -1,12 +1,7 @@
 .map-container {
-  margin: 5rem auto;
-  height: 22rem;
-  width: 40rem;
-}
-
-.l-map {
-  flex: 1;
-  width: 100%;
+  margin: 0 auto;
+  height: 20rem;
+  width: 30rem;
 }
 
 .leaflet-control-zoom {
