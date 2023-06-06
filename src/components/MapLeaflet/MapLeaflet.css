@@ -1,3 +1,14 @@
+.map-container {
+  margin: 5rem auto;
+  height: 22rem;
+  width: 40rem;
+}
+
+.l-map {
+  flex: 1;
+  width: 100%;
+}
+
 .leaflet-control-zoom {
   display: none;
 }

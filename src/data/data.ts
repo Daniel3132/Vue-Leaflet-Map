@@ -1,3 +1,5 @@
-import type { CountryCode } from "@src/types/CountryCode";
+import { CountryCode } from "@src/types/CountryCode";
 
-export const countryCodes: CountryCode[] = ["CO", "SG"];
+const { Colombia, Germany, Singapore, UnitedStates } = CountryCode;
+
+export const countryCodes: CountryCode[] = [Colombia, Singapore, Germany, UnitedStates];

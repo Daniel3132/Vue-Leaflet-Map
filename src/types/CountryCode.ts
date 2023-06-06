@@ -1,1 +1,6 @@
-export type CountryCode = "CO" | "SG" | "DE" | "US";
+export enum CountryCode {
+  Colombia = "CO",
+  Singapore = "SG",
+  Germany = "DE",
+  UnitedStates = "US",
+}
