@@ -2,7 +2,6 @@
   "name": "map-leaflet",
   "author": "Daniel Correa",
   "version": "1.0.0",
-  "license": "MIT",
   "private": false,
   "scripts": {
     "dev": "vite"

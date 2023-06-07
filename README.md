@@ -1,158 +1,59 @@
-# vue-leaflet
+MapLeaflet Component
+====================
 
-Vue-leaflet, written and compatible with Vue 3!
+The `MapLeaflet` component is a Vue component that displays a map using the Leaflet library. It allows you to render markers and circles on the map based on the provided coordinates and colors.
 
-This is a Beta version! And may yet be unstable! If you want to help, please reach out in an
-[issue](https://github.com/vue-leaflet/vue-leaflet/issues) or on [discord](https://discord.gg/uVZAfUf),
-or join the [discussions](https://github.com/vue-leaflet/vue-leaflet/discussions).
+Usage
+-----
 
-## What works
+To use the `MapLeaflet` component, you need to import it and place it in your Vue template. Here's an example of how you can use it:
 
-- LCircle
-- LCircleMarker
-- LControl
-- LControlAttribution
-- LControlLayers
-- LControlScale
-- LControlZoom
-- LFeatureGroup
-- LGeoJson
-- LIcon
-- LImageOverlay
-- LMap
-- LMarker
-- LPolygon
-- LPolyline
-- LPopup
-- LRectangle
-- LTileLayer
-- LTooltip
-- LWmsTileLayer
+vueCopy code
 
-> Note that unlike the [Vue 2 version](https://github.com/vue-leaflet/Vue2Leaflet), this library is fully compatible with SSR.
+`<template>   <div>     <!-- Other components or HTML elements -->      <MapLeaflet />   </div> </template>  <script> import MapLeaflet from "@/components/MapLeaflet";  export default {   components: {     MapLeaflet,   }, }; </script>`
 
-## Installation
+Props
+-----
 
-```bash
-yarn add @vue-leaflet/vue-leaflet leaflet
-```
+The `MapLeaflet` component doesn't accept any props.
 
-or
+Slots
+-----
 
-```bash
-npm i -D @vue-leaflet/vue-leaflet leaflet
-```
+The `MapLeaflet` component doesn't provide any slots.
 
-## Usage
+Data
+----
 
-Until the complete documentation is ready, please check the
-[component playground](https://github.com/vue-leaflet/vue-leaflet/tree/master/src/playground/views) examples or the
-[demo project](https://github.com/vue-leaflet/vue3-demo-project/blob/master/src/App.vue) for usage with Vue 3.
-Most component props mimic the vanilla [Leaflet options](https://leafletjs.com/reference-1.7.1.html) as closely as
-possible, and generally remain the same as in their [Vue2Leaflet counterparts](https://vue2-leaflet.netlify.app/components/).
+The `MapLeaflet` component has the following data properties:
 
-### Quickstart
+* `zoom`: Represents the initial zoom level of the map. It is set to `1` by default.
+* `coordinates`: An array of objects containing the coordinates and color information for the markers and circles on the map. It is populated using the `getDataArray` method.
 
-```vue
-<template>
-  <div style="height:600px; width:800px">
-    <l-map ref="map" v-model:zoom="zoom" :center="[47.41322, -1.219482]">
-      <l-tile-layer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        layer-type="base"
-        name="OpenStreetMap"
-      ></l-tile-layer>
-    </l-map>
-  </div>
-</template>
+Methods
+-------
 
-<script>
-import "leaflet/dist/leaflet.css";
-import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+The `MapLeaflet` component defines the following method:
 
-export default {
-  components: {
-    LMap,
-    LTileLayer,
-  },
-  data() {
-    return {
-      zoom: 2,
-    };
-  },
-};
-</script>
+### `getDataArray(countryCodes: CountryCode[]): Array<{ coordinates: LatLngTuple; color: string }>`
 
-<style></style>
-```
+This method takes an array of `countryCodes` and returns an array of objects containing the coordinates and color information for the markers and circles on the map. It uses the `countryData` module to retrieve the data for each country based on its country code.
 
-### Component playground
+Dependencies
+------------
 
-To see the [component playground](https://github.com/vue-leaflet/vue-leaflet/tree/master/src/playground/views) in action,
-clone this repo and run the local devserver, then visit http://127.0.0.1:5173,
-```bash
-git clone https://github.com/vue-leaflet/vue-leaflet.git
-cd vue-leaflet
-yarn
-yarn dev
-```
+The `MapLeaflet` component relies on the following dependencies:
 
-### Server-side rendering (SSR)
+* `@vue-leaflet/vue-leaflet`: Provides the Leaflet components for Vue.
+* `leaflet`: The Leaflet library itself.
+* `./MapLeaflet.css`: A CSS file that contains styling for the `MapLeaflet` component.
+* `@src/data/data`: A module that provides country code data.
+* `@src/types/CountryCode`: A type definition for country codes.
+* `./countryData`: A module that provides country data including coordinates and color information.
 
-Note that while the vue-leaflet library has the option of enabling SSR, **Leaflet itself does not**.
+Please ensure that these dependencies are properly installed and configured in your project before using the `MapLeaflet` component.
 
-> **N.B.** Using `import L from "leaflet"` or `import { ... } from "leaflet"` can lead to unexpected errors.
+Styling
+-------
 
-To provide server-side rendering and tree-shaking capabilities, vue-leaflet can be configured to use async imports from the
-Leaflet ESM, by disabling the `useGlobalLeaflet` option on the map component, `<l-map :useGlobalLeaflet="false">`.
-
-This can lead to issues when importing additional methods from Leaflet, because the two instances of the Leaflet
-classes are technically no longer the same. See [Issue 48](https://github.com/vue-leaflet/vue-leaflet/issues/48) for more.
-
-To avoid these issues, import any Leaflet methods asynchronously in response to the LMap component's `@ready` event:
-```vue
-<template>
-  <div style="height:600px; width:800px">
-    <p>vue-leaflet SSR Demo</p>
-    <l-map :useGlobalLeaflet="false">
-      <l-geo-json :geojson="geojson" :options="geojsonOptions" />
-    </l-map>
-  </div>
-</template>
-
-<script>
-// DON'T load Leaflet components here!
-// Its CSS is needed though, if not imported elsewhere in your application.
-import "leaflet/dist/leaflet.css"
-import { LMap, LGeoJson } from "@vue-leaflet/vue-leaflet";
-
-export default {
-  components: {
-    LMap,
-    LGeoJson,
-  },
-  data() {
-    return {
-      geojson: {
-        type: "FeatureCollection",
-        features: [
-          // ...
-        ],
-      },
-      geojsonOptions: {
-        // Options that don't rely on Leaflet methods.
-      },
-    };
-  },
-  async beforeMount() {
-    // HERE is where to load Leaflet components!
-    const { circleMarker } = await import("leaflet/dist/leaflet-src.esm");
-
-    // And now the Leaflet circleMarker function can be used by the options:
-    this.geojsonOptions.pointToLayer = (feature, latLng) =>
-      circleMarker(latLng, { radius: 8 });
-    this.mapIsReady = true;
-  },
-};
-</script>
-```
+The `MapLeaflet` component applies styling defined in the `MapLeaflet.css` file. You can customize the styling by modifying this CSS file or overriding the styles in your own project's stylesheets.
