@@ -1,6 +1,6 @@
 <template>
   <div class="main-cont">
-    <MapLeaflet />
+    <MapLeaflet continentFillColor="#111" />
   </div>
 </template>
 

@@ -2,4 +2,9 @@
   margin: 5rem auto;
   height: fit-content;
   width: fit-content;
+
+}
+
+body {
+  background-color: black;
 }
