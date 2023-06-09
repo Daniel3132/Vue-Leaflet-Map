@@ -1,9 +1,7 @@
 <template>
   <div class="map-container">
     <l-map ref="map" v-model:zoom="zoom" :center="[41, 5]" :use-global-leaflet="false">
-
       <l-geo-json :geojson="geojsonData" :optionsStyle="continentStyle" :fillColor="continentFillColor"></l-geo-json>
-
       <l-marker v-for="(data, index) in coordinates" :key="index" :lat-lng="data.coordinates"
         :icon="getMarkerIcon(data.color)"></l-marker>
       <l-circle v-for="(data, index) in coordinates" :key="index" :lat-lng="data.coordinates" :radius="800 * 800"
@@ -14,14 +12,13 @@
 
 
 <script lang="ts">
-import { countryCodes } from "@src/data/data";
-import type { CountryCode } from "@src/types/CountryCode";
+import globalJSON from "@src/data/geoJSON/all-continents.json";
+import { CountryCode } from "@src/types/CountryCode";
 import { LCircle, LGeoJson, LMap, LMarker, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import type { LatLngTuple } from "leaflet";
+import L from "leaflet";
 import "./MapLeaflet.css";
 import { countryData } from "./countryData";
-import type { LatLngTuple } from "leaflet";
-import globalJSON from "@src/data/geoJSON/all-continents.json";
-import L from "leaflet";
 
 export default {
   components: {
@@ -36,11 +33,14 @@ export default {
       type: String,
       default: "gray"
     },
+    countryCodes: {
+      type: Array as () => CountryCode[]
+    }
   },
   data() {
     return {
       zoom: 1,
-      coordinates: this.getDataArray(countryCodes),
+      coordinates: this.getDataArray(this.countryCodes),
     };
   },
   computed: {
@@ -70,7 +70,10 @@ export default {
     },
     continentStyle() {
       return {
-        stroke: false,
+        stroke: true,
+        color: "white",
+        weight: 0.3,
+        opacity: 1,
         fill: true,
         fillColor: this.continentFillColor,
         fillOpacity: 1
